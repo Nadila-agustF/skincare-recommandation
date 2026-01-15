@@ -1,6 +1,5 @@
 import mysql.connector
 import streamlit as st
-import os
 
 
 class DatabaseConnection:
@@ -16,7 +15,7 @@ class DatabaseConnection:
                 database=st.secrets["mysql"]["database"],
                 user=st.secrets["mysql"]["user"],
                 password=st.secrets["mysql"]["password"],
-                ssl_ca=os.path.abspath(st.secrets["mysql"]["ssl_ca"]),
+                ssl_ca=st.secrets["mysql"]["ssl_ca"],
                 ssl_verify_cert=True,
                 use_pure=True,
                 connection_timeout=5
@@ -71,3 +70,4 @@ class DatabaseConnection:
         except Exception as e:
             print(f"❌ Error saving recommendations: {e}")
             return False
+
