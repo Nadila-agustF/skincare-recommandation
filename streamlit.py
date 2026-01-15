@@ -3,6 +3,7 @@ import mysql.connector
 from mysql.connector import Error
 import pandas as pd
 import os
+import tempfile
 
 from utils import load_and_merge_data, get_product_image, get_local_fallback_image
 from recommender import SkincareRecommender
@@ -431,4 +432,5 @@ st.markdown("""
 </div>
 
 """, unsafe_allow_html=True)
+
 
