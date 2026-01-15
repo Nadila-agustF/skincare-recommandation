@@ -1,3 +1,4 @@
+import tempfile
 import mysql.connector
 import streamlit as st
 
@@ -70,4 +71,5 @@ class DatabaseConnection:
         except Exception as e:
             print(f"❌ Error saving recommendations: {e}")
             return False
+
 
