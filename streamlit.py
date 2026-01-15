@@ -43,29 +43,34 @@ def get_db_connection():
             "use_pure": True,
             "connection_timeout": 10
         }
-        
-        # Tambahkan SSL jika ada konfigurasi
-        ssl_ca = mysql_secrets.get("ssl_ca")
-        if ssl_ca and os.path.exists(ssl_ca):
-            connection_config["ssl_ca"] = ssl_ca
-            connection_config["ssl_verify_cert"] = True
-        else:
-            st.warning("⚠️ SSL certificate tidak ditemukan, menggunakan koneksi tanpa SSL")
-            connection_config["ssl_disabled"] = True
-        
-        connection = mysql.connector.connect(**connection_config)
-        
-        if connection.is_connected():
-            return connection
-        else:
-            return None
+# Penanganan ssl
+    ssl_ca_content = mysql_secrets.get("ssl_ca")
+    
+    if ssl_ca_content:
+        with tempfile.NamedTemporaryFile(delete=False) as ca_file:
+            ca_file.write(ssl_ca_content.encode("utf-8"))
+            ca_path = ca_file.name
+    
+        connection_config["ssl_ca"] = ca_path
+        connection_config["ssl_verify_cert"] = True
+    else:
+        st.error("❌ SSL CA tidak ditemukan di secrets")
+        return None
+    
+    # Koneksi
+    connection = mysql.connector.connect(**connection_config)
+    
+    if connection.is_connected():
+        return connection
+    else:
+        return None
             
-    except Error as e:
-        st.error(f"❌ Error connecting to MySQL Aiven: {e}")
-        return None
-    except Exception as e:
-        st.error(f"❌ Unexpected error: {e}")
-        return None
+except Error as e:
+    st.error(f"❌ Error connecting to MySQL Aiven: {e}")
+    return None
+except Exception as e:
+    st.error(f"❌ Unexpected error: {e}")
+    return None
   
 
 # ===============================
@@ -424,4 +429,5 @@ st.markdown("""
     <p>🧴 <strong>Sistem Rekomendasi Skincare Wardah</strong> • Content-Based Filtering</p>
     <p style="font-size: 12px; opacity: 0.7;">TF-IDF + Cosine Similarity • Data dari Wardah Beauty</p>
 </div>
+
 """, unsafe_allow_html=True)
