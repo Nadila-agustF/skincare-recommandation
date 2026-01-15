@@ -43,34 +43,34 @@ def get_db_connection():
             "use_pure": True,
             "connection_timeout": 10
         }
-# Penanganan ssl
-    ssl_ca_content = mysql_secrets.get("ssl_ca")
-    
-    if ssl_ca_content:
-        with tempfile.NamedTemporaryFile(delete=False) as ca_file:
-            ca_file.write(ssl_ca_content.encode("utf-8"))
-            ca_path = ca_file.name
-    
-        connection_config["ssl_ca"] = ca_path
-        connection_config["ssl_verify_cert"] = True
-    else:
-        st.error("❌ SSL CA tidak ditemukan di secrets")
-        return None
-    
-    # Koneksi
-    connection = mysql.connector.connect(**connection_config)
-    
-    if connection.is_connected():
-        return connection
-    else:
-        return None
+    # Penanganan ssl
+        ssl_ca_content = mysql_secrets.get("ssl_ca")
+        
+        if ssl_ca_content:
+            with tempfile.NamedTemporaryFile(delete=False) as ca_file:
+                ca_file.write(ssl_ca_content.encode("utf-8"))
+                ca_path = ca_file.name
+        
+            connection_config["ssl_ca"] = ca_path
+            connection_config["ssl_verify_cert"] = True
+        else:
+            st.error("❌ SSL CA tidak ditemukan di secrets")
+            return None
+        
+        # Koneksi
+        connection = mysql.connector.connect(**connection_config)
+        
+        if connection.is_connected():
+            return connection
+        else:
+            return None
             
-except Error as e:
-    st.error(f"❌ Error connecting to MySQL Aiven: {e}")
-    return None
-except Exception as e:
-    st.error(f"❌ Unexpected error: {e}")
-    return None
+    except Error as e:
+        st.error(f"❌ Error connecting to MySQL Aiven: {e}")
+        return None
+    except Exception as e:
+        st.error(f"❌ Unexpected error: {e}")
+        return None
   
 
 # ===============================
@@ -431,3 +431,4 @@ st.markdown("""
 </div>
 
 """, unsafe_allow_html=True)
+
