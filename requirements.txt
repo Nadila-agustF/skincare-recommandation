@@ -1,12 +1,8 @@
 ﻿certifi==2025.10.5
 cffi==2.0.0
-mysql-connector==2.2.9
-mysql-connector-python>=9.5.0
-narwhals==2.13.0
+mysql-connector-python==8.3.0
 numpy==2.3.4
 pandas==2.3.3
-playwright==1.57.0
-protobuf==6.33.2
 requests==2.32.5
 requests-html==0.10.0
 scikit-learn==1.8.0
@@ -15,4 +11,5 @@ streamlit==1.52.1
 webdriver-manager==4.0.2
 websocket-client==1.9.0
 websockets==10.4
+
 
